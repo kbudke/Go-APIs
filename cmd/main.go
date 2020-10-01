@@ -1,17 +1,28 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
-	"io"
-	"net/http"
+
+	_ "github.com/lib/pq"
+)
+
+const (
+	hostname      = "localhost"
+	host_port     = 1234
+	username      = "starwars_user"
+	password      = "starwars"
+	database_name = "StarWars"
 )
 
 func main() {
-	fmt.Print("starting server on port 3000")
-	hellohandler := func(w http.ResponseWriter, r *http.Request) {
-		io.WriteString(w, "General Kenobi\n")
-	}
+	pg_con_string := fmt.Sprintf("port=%d host=%s user=%s "+
+		"password=%s dbname=%s sslmode=disable",
+		host_port, hostname, username, password, database_name)
 
-	http.HandleFunc("/hellothere", hellohandler)
-	http.ListenAndServe(":3000", nil)
+	db, err := sql.Open("postgres", pg_con_string)
+	if err != nil {
+		panic(err)
+	}
+	defer db.Close()
 }
