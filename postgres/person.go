@@ -1,8 +1,6 @@
 package sql
 
-import (
-	"github.homedepot.com/dev-insights/team-management-api/models"
-)
+import "github.com/kbudke/Go-APIs/models"
 
 var (
 	// 	createRolesTable = `
